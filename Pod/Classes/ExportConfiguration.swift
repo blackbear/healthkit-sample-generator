@@ -54,6 +54,10 @@ public struct HealthDataFullExportConfiguration : ExportConfiguration {
     /// should uuids be exported or not
     public var exportUuids = false
     
+    public var startDate: NSDate?
+    
+    public var endDate: NSDate?
+    
     /**
         instantiate a HealthDataFullExportConfiguration.
         - Parameter profileName: the name of the profile
@@ -62,5 +66,12 @@ public struct HealthDataFullExportConfiguration : ExportConfiguration {
     public init(profileName:String, exportType: HealthDataToExportType){
         self.profileName = profileName
         self.exportType = exportType
+    }
+    
+    public init(profileName:String, exportType: HealthDataToExportType, startDate: NSDate, endDate:NSDate){
+        self.profileName = profileName
+        self.exportType = exportType
+        self.startDate = startDate
+        self.endDate = endDate
     }
 }
