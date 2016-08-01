@@ -33,6 +33,12 @@ public protocol ExportTarget {
 /// An export target that generetes a single json doc for the whole data.
 public class JsonSingleDocExportTarget  {
     
+    private var sawSamples = false
+    
+    public func hasSamples() -> Bool {
+        return self.sawSamples
+    }
+    
     private(set) var jsonWriter: JsonWriter
     
     init(outputStream: OutputStream){
@@ -122,7 +128,7 @@ public class JsonSingleDocAsFileExportTarget : JsonSingleDocExportTarget, Export
 /// an export target that creates a single json doc in memory
 public class JsonSingleDocInMemExportTarget: JsonSingleDocExportTarget, ExportTarget {
     
-    var hasSamples = false
+    
     /// create a JsonSingleDocExportTarget in Mem
     public init(){
         super.init(outputStream: MemOutputStream())
