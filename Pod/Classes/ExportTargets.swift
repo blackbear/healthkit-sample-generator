@@ -122,6 +122,7 @@ public class JsonSingleDocAsFileExportTarget : JsonSingleDocExportTarget, Export
 /// an export target that creates a single json doc in memory
 public class JsonSingleDocInMemExportTarget: JsonSingleDocExportTarget, ExportTarget {
     
+    var hasSamples = false
     /// create a JsonSingleDocExportTarget in Mem
     public init(){
         super.init(outputStream: MemOutputStream())
@@ -132,6 +133,7 @@ public class JsonSingleDocInMemExportTarget: JsonSingleDocExportTarget, ExportTa
         return true
     }
     
+  
     /// see ExportTarget Protocol
     public func getJsonString() -> String {
         return jsonWriter.getJsonString()
