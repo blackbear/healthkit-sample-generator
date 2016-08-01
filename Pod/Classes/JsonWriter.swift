@@ -8,6 +8,15 @@
 
 import Foundation
 
+extension NSDate {
+    var formattedISO8601: String {
+        let formatter = NSDateFormatter()
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'hh:mm:SSxxxxx"   //+00:00
+        return formatter.stringFromDate(self)
+    }
+}
+
 enum JsonWriterError: ErrorType {
     case NSJSONSerializationError(String)
 }
@@ -220,8 +229,7 @@ internal class JsonWriter {
     */
     internal func writeDate(value: NSDate?) {
         if let date = value {
-            let number = NSNumber(double:date.timeIntervalSince1970*1000)
-            writeNumber(number)
+            writeString(date.formattedISO8601)
         } else {
             writeNull()
         }

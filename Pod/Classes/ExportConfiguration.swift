@@ -19,6 +19,10 @@ public protocol ExportConfiguration {
     var profileName:String {get}
     /// should uuids be exported or not
     var exportUuids:Bool {get}
+    /// What date to start at
+    var startDate: NSDate? {get}
+    /// What date to end at
+    var endDate: NSDate? {get}
 }
 
 // possible configuration extension: 
@@ -29,17 +33,22 @@ internal extension ExportConfiguration {
     
     internal func getPredicate() -> NSPredicate? {
         
-        let predicateNoCorreltion = HKQuery.predicateForObjectsWithNoCorrelation()
+        var predicateNoCorreltion = HKQuery.predicateForObjectsWithNoCorrelation()
         
         switch exportType {
         case .ALL:
-            return predicateNoCorreltion
+            break
         case .ADDED_BY_THIS_APP:
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [predicateNoCorreltion, HKQuery.predicateForObjectsFromSource(HKSource.defaultSource())])
+            predicateNoCorreltion =  NSCompoundPredicate(andPredicateWithSubpredicates: [predicateNoCorreltion, HKQuery.predicateForObjectsFromSource(HKSource.defaultSource())])
         case .GENERATED_BY_THIS_APP:
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [predicateNoCorreltion, HKQuery.predicateForObjectsWithMetadataKey("GeneratorSource", allowedValues: ["HSG"])])
+            predicateNoCorreltion =  NSCompoundPredicate(andPredicateWithSubpredicates: [predicateNoCorreltion, HKQuery.predicateForObjectsWithMetadataKey("GeneratorSource", allowedValues: ["HSG"])])
         }
         
+        if startDate != nil && endDate != nil {
+           predicateNoCorreltion = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateNoCorreltion, HKQuery.predicateForSamplesWithStartDate(self.startDate, endDate: self.endDate, options: HKQueryOptions.StrictStartDate)])
+                
+        }
+        return predicateNoCorreltion
     }
 }
 
@@ -53,10 +62,11 @@ public struct HealthDataFullExportConfiguration : ExportConfiguration {
     public var profileName: String // required
     /// should uuids be exported or not
     public var exportUuids = false
-    
+    /// What date to start at
     public var startDate: NSDate?
-    
+    /// What date to end at
     public var endDate: NSDate?
+
     
     /**
         instantiate a HealthDataFullExportConfiguration.
