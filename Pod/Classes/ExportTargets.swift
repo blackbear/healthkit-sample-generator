@@ -76,13 +76,11 @@ public class JsonSingleDocExportTarget  {
     
     /// see ExportTarget Protocol
     public func startWriteType(type:HKSampleType) -> Void {
-        self.sawSamples = true
         jsonWriter.writeArrayFieldStart(String(type))
     }
     
     /// see ExportTarget Protocol
     public func endWriteType() -> Void {
-        self.sawSamples = true
         jsonWriter.writeEndArray()
     }
     
