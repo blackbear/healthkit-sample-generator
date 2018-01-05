@@ -12,7 +12,7 @@ extension NSDate {
     var formattedISO8601: String {
         let formatter = NSDateFormatter()
         formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'hh:mm:SSxxxxx"   //+00:00
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssxxxxx"   //+00:00
         return formatter.stringFromDate(self)
     }
 }
